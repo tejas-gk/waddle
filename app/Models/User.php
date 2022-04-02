@@ -69,7 +69,7 @@ class User extends Authenticatable
 
     public function defaultProfilePhotoUrl()
     {
-        return 'https://avatars.dicebear.com/api/'. implode('/', [
+        return 'https://ui-avatars.com/api'. implode('/', [
 
             //IMPORTANT: Do not change this order
             urlencode($this->name), // name

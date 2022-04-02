@@ -12,8 +12,8 @@ class Post extends Model
         return $this->belongsTo('App\Models\User');
     }
 
-    public function getRouteKeyName()
-    {
-        return 'slug';
-    }
+// public function getRouteKeyName()
+// {
+//     return 'slug';
+// }
 }
