@@ -35,6 +35,10 @@ Route::controller(PostController::class)->group(function(){
 });
 
 Route::get('/profile/{user}',[PostController::class,'profile'])->name('profile');
+Route::get('like/{post}',[PostController::class,'like'])->name('like');
+
+
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

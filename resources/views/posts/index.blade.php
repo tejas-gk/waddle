@@ -18,13 +18,15 @@
         @if(Auth::id()== $post->user_id && !Auth::guest())
         |<a href="{{url('/posts/'.$post->id.'/delete/')}}">delete</a>|
         <a href="{{url('/posts/'.$post->id.'/edit/')}}">edit</a>|
-        {{-- @include('layouts.timeline') --}}
+        
         {{-- <a href="#" class="like">{{ Auth::user()->likes()->where('post_id', $post->id)->first() ? Auth::user()->likes()->where('post_id', $post->id)->first()->like == 1 ? 'You like this post' : 'Lik' : 'Like'  }}</a> | --}}
-    <br>{{$post->created_at->diffForHumans()}}</li>
-    @else
-    <br>{{$post->created_at->diffForHumans()}}</li>
-    @endif
    
+    @endif
+    | <a href="{{url('/posts/'.$post->id.'/like/')}}">like</a> |
+    <br>{{$post->created_at->diffForHumans()}}</li>
+    
+    
+</li>
     <hr>
     @endforeach
     {{ $posts->links() }}
@@ -64,3 +66,24 @@ padding:2px;
 }
 
 </style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+{{-- <script>
+
+$(document).ready(function(){
+    $('.like').click(function(){
+        var post_id = $(this).attr("id");
+        $.ajax({
+            url:"{{ route('like') }}",
+            method:"get",
+            data:{post_id:post_id},
+            success:function(data)
+            {
+                alert(data);
+            }
+        });
+    });
+});
+</script> --}}
+

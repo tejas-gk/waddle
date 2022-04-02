@@ -157,5 +157,10 @@ class PostController extends Controller
 
         return view('users.profile', compact('user'));
     }
+    public function like(Post $post){
+        $post->like()->toggle(Auth::user()->id);
+        return back();
+        
+    }
    
 }

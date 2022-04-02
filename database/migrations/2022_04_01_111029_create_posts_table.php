@@ -22,8 +22,8 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->unsignedBigInteger('user_id');
            
-            $table->integer('status_id');
-            $table->integer('comment_status_id');
+            $table->integer('status_id')->nullable();
+            $table->integer('comment_status_id')->nullable();
             $table->integer('comment_count')->default(0);
             $table->integer('view_count')->default(0);
             $table->integer('like_count')->default(0);
