@@ -59,6 +59,12 @@
             <x-jet-input-error for="name" class="mt-2" />
         </div>
 
+         <!-- UserName -->
+         <div class="col-span-6 sm:col-span-4">
+            <x-jet-label for="username" value="{{ __('userName') }}" />
+            {{$this->user->username}}
+        </div>
+
         <!-- Email -->
         <div class="col-span-6 sm:col-span-4">
             <x-jet-label for="email" value="{{ __('Email') }}" />

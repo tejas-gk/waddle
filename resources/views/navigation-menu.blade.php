@@ -69,7 +69,8 @@
                         </x-jet-dropdown>
                     </div>
                 @endif
-                @endif
+               @endif
+           
 
                 <!-- Settings Dropdown -->
                 <div class="ml-3 relative">

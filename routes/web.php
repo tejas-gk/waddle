@@ -34,8 +34,8 @@ Route::controller(PostController::class)->group(function(){
 
 });
 
-Route::get('/profile/{user}',[PostController::class,'profile'])->name('profile');
-Route::get('like/{post}',[PostController::class,'like'])->name('like');
+Route::get('/profile/{user}',[PostController::class,'profile'])->name('profile');# in this parameter is username of user
+Route::post('like/{post}',[LikeController::class,'like'])->name('like');
 
 
 

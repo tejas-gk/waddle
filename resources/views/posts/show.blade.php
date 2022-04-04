@@ -1,2 +1,2 @@
 {{$post->post}}<hr>
-<a href="#">{{$post->user->name}} </a>
+<a href="{{route('profile', ['user' => $post->user->username])}}">{{$post->user->name}}</a>

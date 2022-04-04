@@ -13,11 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('roles', function (Blueprint $table) {
-            $table->id();
-            $table->string('role')->default('user');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
-            $table->timestamps();
+        Schema::create('referral', function (Blueprint $table) {
+        $table->id();
+        $table->string('referral_code')->nullable();
+        $table->string('referral_by')->nullable();
+        $table->string('referral_by_code')->nullable();
+        $table->foreignId('user_id')->nullable();
         });
     }
 
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('referral');
     }
 };

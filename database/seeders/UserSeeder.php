@@ -23,11 +23,21 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
             'created_at' => now(),
             'updated_at' => now(),
+            'id' => 1,
             'remember_token' =>Str::random(10),
             'email_verified_at' => now(),
+            'username'=>'kryptoknight'
 
         ]);
+        DB::table('teams')->insert([
+            'name' =>"Tejas'".'s'.' Team',
+            'personal_team'=>1,
+            'created_at' => now(),
+            'updated_at' => now(),
+            'user_id'=>1
 
+        ]);
+        
 
     }
 }

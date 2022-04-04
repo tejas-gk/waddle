@@ -67,7 +67,7 @@ class PostController extends Controller
      * @param  \App\Models\Like  $like
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post,$id)
+    public function show(Post $post, $id)
     {
         
 
@@ -148,19 +148,27 @@ class PostController extends Controller
         DB::table('posts')->where('id',$id)->delete();
         return redirect('/posts');
     }
+    // from here transfer to profilecontroller
 
     public function profile(User $user){
        
-        $user=DB::table('users')->select(array('name','id'))->where('id', '=', $user->id)->first();
-        // $posts=DB::table('posts')->select(array('post','id','image','slug','created_at'))->where('user_id', '=', $user->id)->get();
-        $posts='hey';
+        $user=DB::table('users')->select(array('name','id','bio','profile_photo_path'))->where('id', '=', $user->id)->first();
+        $posts=DB::table('posts')->select(array('post','id','image','slug','created_at'))->where('user_id', '=', $user->id)->get();
+        
 
-        return view('users.profile', compact('user'));
+        return view('users.profile', compact('user','posts'));
     }
     public function like(Post $post){
         $post->like()->toggle(Auth::user()->id);
         return back();
         
+    }
+    public function AddBio(Request $request){
+        $user=User::find(Auth::user()->id);
+        $user->bio=$request->bio;
+        // $user_id=$user->id;
+        $user->save();
+        return back();
     }
    
 }

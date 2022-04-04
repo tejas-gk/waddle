@@ -21,20 +21,18 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
-            $table->string('profile_photo_path', 2048)->nullable();
-
+            $table->text('profile_photo_path', 2048)->nullable();
+            $table->boolean('is_public_account')->default(false);
             $table->string('username')->unique();
-            $table->string('bio')->nullable();
+            $table->text('bio')->nullable();
             $table->string('website')->nullable();
             $table->string('gender')->nullable();
             $table->string('location')->nullable();
             $table->integer('role_id')->default(1);
             $table->string('banner')->nullable();
-           
+         
             $table->string('Apitoken')->nullable();
-            $table->string('referral_code')->nullable();
-            $table->string('referral_by')->nullable();
-            $table->string('referral_by_code')->nullable();
+            
             $table->boolean('is_active')->default(false);
             $table->boolean('is_verified')->default(false);
             $table->boolean('is_banned')->default(false);

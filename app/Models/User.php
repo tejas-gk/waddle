@@ -26,7 +26,7 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','username','gender'
     ];
 
     /**
@@ -62,9 +62,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class);
     }
+
     public function getRouteKeyName()
     {
-        return 'name';
+        return 'username';
     }
 
     public function defaultProfilePhotoUrl()

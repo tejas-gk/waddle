@@ -23,6 +23,14 @@
                 <x-jet-label for="username" value="{{ __('Username') }}" />
                 <x-jet-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')" required />
             </div>
+            <div class="mt-4">
+                <x-jet-label for="username" value="{{ __('Gender') }}" />
+               <select name="gender">
+                   <option value="buisness" name="buisness default gender">default</option>
+                   <option value="male" name="male gender">male</option>
+                   <option value="female" name="female gender">female</option>
+               </select>
+            </div>
 
             <div class="mt-4">
                 <x-jet-label for="password" value="{{ __('Password') }}" />
