@@ -1,9 +1,15 @@
 {{-- {{banner}} --}}
+@if(Cache::has('is_online' . $user->id))
+<span class="text-success">Online</span>
+@else
+<span class="text-secondary">Offline</span>
+@endif
 
 <form action="" enctype="multipart/form-data">
     <input type="file" name="" id="" alt="banner">
 </form>
 {{$user->name}}
+
 <img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
 @if($user->bio!=null)
     <p>{{$user->bio}}</p>

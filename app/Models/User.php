@@ -10,6 +10,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Cache;
 
 class User extends Authenticatable
 {
@@ -61,6 +62,14 @@ class User extends Authenticatable
     public function posts()
     {
         return $this->hasMany(Post::class);
+    }
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+    public function isOnline()
+    {
+        return Cache::has('user-is-online-' . $this->id);
     }
 
     public function getRouteKeyName()

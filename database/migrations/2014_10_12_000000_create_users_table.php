@@ -25,6 +25,8 @@ return new class extends Migration
             $table->boolean('is_public_account')->default(false);
             $table->string('username')->unique();
             $table->text('bio')->nullable();
+            $table->unsignedBigInteger('phone_no')->nullable();
+            
             $table->string('website')->nullable();
             $table->string('gender')->nullable();
             $table->string('location')->nullable();
@@ -33,10 +35,11 @@ return new class extends Migration
          
             $table->string('Apitoken')->nullable();
             
-            $table->boolean('is_active')->default(false);
+            $table->timestamp('last_seen')->nullable();
             $table->boolean('is_verified')->default(false);
             $table->boolean('is_banned')->default(false);
             $table->string('theme')->default('default');
+            
 
         
             $table->timestamps();

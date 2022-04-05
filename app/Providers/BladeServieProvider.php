@@ -24,8 +24,12 @@ class BladeServieProvider extends ServiceProvider
     public function boot()
     {
         //
-        Blade::if('disk', function ($value) {
-            return config('filesystems.default') === $value;
+        Blade::if('user', function ($value) {
+            return '<?php if(Auth::user()->id == '.$value.'): ?>';
         });
+        Blade::if('enduser', function ($value) {
+            return '<?php endif; ?>';
+        });
+        
     }
 }

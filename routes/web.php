@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\LikeController;
+use App\Http\Controllers\ProfileController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,8 +37,11 @@ Route::controller(PostController::class)->group(function(){
 });
 
 Route::get('/profile/{user}',[PostController::class,'profile'])->name('profile');# in this parameter is username of user
-Route::post('like/{post}',[LikeController::class,'like'])->name('like');
+Route::post('/like',[LikeController::class,'like'])->name('like');
 
+Route::get('/admin/index',[App\Http\Controllers\AdminController::class,'index'])->name('admin.index');
+
+Route::get('/status', [ProfileController::class, 'status'])->name('status');
 
 
 Route::middleware([
@@ -48,3 +53,13 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+
+
+// later change this to a separate file called routes/admin.php
+use App\Http\Controllers\AdminController;
+Route::controller(AdminController::class)->prefix('admin')->group(function(){
+    Route::get('/index','index')->name('admin.index');
+    
+});
+
