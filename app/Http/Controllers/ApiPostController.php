@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Validator;
 
 class ApiPostController extends Controller
 {
-    public function apiIndex(){
+    public function apiindex(){
         $posts = Post::all();
         return response()->json($posts);
     }
