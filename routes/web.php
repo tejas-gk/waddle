@@ -16,16 +16,13 @@ use App\Http\Controllers\ProfileController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::view('/', 'welcome');
 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//crud of post
 Route::controller(PostController::class)->group(function(){
     Route::get('/posts','index')->name('posts.index');
     Route::post('/create','create')->name('posts.create')->middleware('only-auth');
@@ -36,15 +33,18 @@ Route::controller(PostController::class)->group(function(){
     Route::get('/posts/{id}/delete','delete')->name('posts.delete')->middleware('only-auth');
 
 });
-
+/**
+ * user timeline
+ * 
+ */
 Route::get('/profile/{user}',[PostController::class,'profile'])->name('profile');# in this parameter is username of user
-Route::post('/like',[LikeController::class,'like'])->name('like');
+Route::post('/like',[LikeController::class,'like'])->name('like');#either do this in livewire or ajax
 Route::post('/bio',[PostController::class,'AddBio'])->name('bio');
 Route::get('/followers',function(){
     return view('followers');
 })->name('followers');
 
-Route::get('/admin/index',[AdminController::class,'index'])->name('admin.index');
+Route::view('/admin/index','admin.index');
 
 Route::get('/status', [ProfileController::class, 'status'])->name('status');
 
