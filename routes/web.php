@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ProfileController;
+// use App\Http\Controllers\AdminController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,16 +16,13 @@ use App\Http\Controllers\ProfileController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::view('/', 'welcome');
 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//crud of post
 Route::controller(PostController::class)->group(function(){
     Route::get('/posts','index')->name('posts.index');
     Route::post('/create','create')->name('posts.create')->middleware('only-auth');
@@ -35,11 +33,18 @@ Route::controller(PostController::class)->group(function(){
     Route::get('/posts/{id}/delete','delete')->name('posts.delete')->middleware('only-auth');
 
 });
-
+/**
+ * user timeline
+ * 
+ */
 Route::get('/profile/{user}',[PostController::class,'profile'])->name('profile');# in this parameter is username of user
-Route::post('/like',[LikeController::class,'like'])->name('like');
+Route::post('/like',[LikeController::class,'like'])->name('like');#either do this in livewire or ajax
+Route::post('/bio',[PostController::class,'AddBio'])->name('bio');
+Route::get('/followers',function(){
+    return view('followers');
+})->name('followers');
 
-Route::get('/admin/index',[App\Http\Controllers\AdminController::class,'index'])->name('admin.index');
+Route::view('/admin/index','admin.index');
 
 Route::get('/status', [ProfileController::class, 'status'])->name('status');
 
@@ -57,9 +62,4 @@ Route::middleware([
 
 
 // later change this to a separate file called routes/admin.php
-use App\Http\Controllers\AdminController;
-Route::controller(AdminController::class)->prefix('admin')->group(function(){
-    Route::get('/index','index')->name('admin.index');
-    
-});
 

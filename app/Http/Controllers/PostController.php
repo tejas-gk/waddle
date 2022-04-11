@@ -104,23 +104,6 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post,$id)
     {
-        // $post=validator(
-        //     $request->all(),
-        //     [
-        //         'title'=>'required|min:5',
-        //         'image'=>'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        //     ],
-        //     [
-        //         'title.required'=>'Please enter title',
-        //         'title.min'=>'Title must be at least 5 characters',
-        //         'image.image'=>'Please enter image',
-        //         'image.mimes'=>'Please enter image',
-        //         'image.max'=>'Image must be less than 2MB',
-        //     ]
-        // );
-        // if($post->fails()){
-        //     return redirect()->back()->withErrors($post)->withInput();
-        // }
         $post=Post::find($id);
         $post->post=$request->post;
       
@@ -166,7 +149,6 @@ class PostController extends Controller
     public function AddBio(Request $request){
         $user=User::find(Auth::user()->id);
         $user->bio=$request->bio;
-        // $user_id=$user->id;
         $user->save();
         return back();
     }

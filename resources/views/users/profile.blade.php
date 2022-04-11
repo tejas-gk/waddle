@@ -1,8 +1,8 @@
 {{-- {{banner}} --}}
 @if(Cache::has('is_online' . $user->id))
-<span class="text-success">Online</span>
+<span class="text-success" style="color: green">Online</span>
 @else
-<span class="text-secondary">Offline</span>
+<span class="text-secondary" style="color:red">Offline</span>
 @endif
 
 <form action="" enctype="multipart/form-data">
@@ -10,7 +10,7 @@
 </form>
 {{$user->name}}
 
-<img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+<img class="h-8 w-8 rounded-full object-cover" src=" {{asset('storage/profile-photos/'.$user->profile_photo_path)}}" alt="{{ $user->name }}" />
 @if($user->bio!=null)
     <p>{{$user->bio}}</p>
 @else
