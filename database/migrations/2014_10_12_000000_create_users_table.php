@@ -24,7 +24,7 @@ return new class extends Migration
             $table->text('profile_photo_path', 2048)->nullable();
             $table->boolean('is_public_account')->default(false);
             $table->string('username')->unique();
-            $table->text('bio')->nullable();
+            $table->text('bio')->nullable(); 
             $table->unsignedBigInteger('phone_no')->nullable();
             
             $table->string('website')->nullable();

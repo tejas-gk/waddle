@@ -133,24 +133,5 @@ class PostController extends Controller
     }
     // from here transfer to profilecontroller
 
-    public function profile(User $user){
-       
-        $user=DB::table('users')->select(array('name','id','bio','profile_photo_path'))->where('id', '=', $user->id)->first();
-        $posts=DB::table('posts')->select(array('post','id','image','slug','created_at'))->where('user_id', '=', $user->id)->get();
-        
-
-        return view('users.profile', compact('user','posts'));
-    }
-    public function like(Post $post){
-        $post->like()->toggle(Auth::user()->id);
-        return back();
-        
-    }
-    public function AddBio(Request $request){
-        $user=User::find(Auth::user()->id);
-        $user->bio=$request->bio;
-        $user->save();
-        return back();
-    }
    
 }

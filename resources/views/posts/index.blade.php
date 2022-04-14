@@ -20,7 +20,7 @@
         |<a href="{{url('/posts/'.$post->id.'/delete/')}}" >delete</a>|
         <a href="{{url('/posts/'.$post->id.'/edit/')}}">edit</a>|
         
-        <a href="#" class="like">{{ Auth::user()->likes()->where('post_id', $post->id)->first() ? Auth::user()->likes()->where('post_id', $post->id)->first()->like == 1 ? 'You like this post' : 'Like' : 'Like'  }}</a> |
+        {{-- <a href="#" class="like">{{ Auth::user()->likes()->where('post_id', $post->id)->first() ? Auth::user()->likes()->where('post_id', $post->id)->first()->like == 1 ? 'You like this post' : 'Like' : 'Like'  }}</a> | --}}
 
     @endif
     

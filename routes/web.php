@@ -37,17 +37,18 @@ Route::controller(PostController::class)->group(function(){
  * user timeline
  * 
  */
-Route::get('/profile/{user}',[PostController::class,'profile'])->name('profile');# in this parameter is username of user
-Route::post('/like',[LikeController::class,'like'])->name('like');#either do this in livewire or ajax
-Route::post('/bio',[PostController::class,'AddBio'])->name('bio');
-Route::get('/followers',function(){
-    return view('followers');
-})->name('followers');
+Route::controller(ProfileController::class)->group(function(){
+    Route::get('/profile/{user}','profile')->name('profile');
+    Route::get('/status','status')->name('status');
+    Route::post('/like/{id}','like')->name('like');
+    Route::post('/bio','AddBio')->name('AddBio')->middleware('only-auth');
+    
+});
+
 
 Route::view('/admin/index','admin.index');
 
-Route::get('/status', [ProfileController::class, 'status'])->name('status');
-
+ 
 
 Route::middleware([
     'auth:sanctum',
