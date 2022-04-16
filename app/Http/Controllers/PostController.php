@@ -16,7 +16,7 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public static function index()
     {
         $posts=Post::orderBy('id','DESC')->paginate(5);
         $user=User::select('name')->get(); 

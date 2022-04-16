@@ -16,12 +16,13 @@ return new class extends Migration
         Schema::create('votes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('comment_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('comment_id')->nullable()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('post_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->boolean('like')->default(false);
-            $table->boolean('dislikes')->default(false);
-            $table->boolean('comment_like')->default(false);
-            $table->boolean('comment_dislikes')->default(false);
+            $table->boolean('upvote')->default(false);
+            $table->boolean('downvote')->default(false);
+            $table->boolean('comment_vote')->default(false);
+            $table->boolean('comment_downvotes')->default(false);
+            $table->timestamps();
         });
     }
 

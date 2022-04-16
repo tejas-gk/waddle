@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('follows', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->boolean('follow')->default(false);
             $table->unsignedBigInteger('request_id')->nullable();
             $table->unsignedBigInteger('follow_id')->nullable();
             

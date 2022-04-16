@@ -9,57 +9,48 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class ApiPostController extends Controller
 {
-    public function apiindex(){
-        $posts = Post::all();
-        return response()->json($posts);
+    public function index()
+    {
+        $posts=Post::orderBy('id','DESC')->paginate(5);
+        $user=User::select('name')->get(); 
+        return response()->json(['posts'=>$posts,'user'=>$user]);
     }
-    public function apiCreate(Request $request){
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|max:255',
-            'body' => 'required',
-            'user_id' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['error'=>$validator->errors()], 401);
+    public function create()
+    {
+        return response()->json(['message'=>'success']);
+    }
+    public function store(Request $request)
+    {
+        $post=new Post;
+       
+        $post->post=$request->post;
+        $str=Str::random(10).time();
+        $post->slug=Str::slug($request->post).$str;
+        
+        $post->user_id=Auth::user()->id;
+        if($request->hasFile('image')){
+            $image=$request->file('image');
+            $image_name=time().'.'.$image->getClientOriginalExtension();
+            $destinationPath=public_path('/images');
+            $image->move($destinationPath,$image_name);
+            $post->image=$image_name;
         }
 
-        $post = new Post;
-        $post->title = $request->title;
-        $post->body = $request->body;
-        $post->user_id = $request->user_id;
         $post->save();
-        return response()->json($post);
+        return redirect('/posts');
     }
-    public function apiShow($id){
-        $post = Post::find($id);
-        return response()->json($post);
-    }
-    public function apiUpdate(Request $request, $id){
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|max:255',
-            'body' => 'required',
-            'user_id' => 'required',
-        ]);
+    public function show(Post $post, $id)
+    {
+        
 
-        if ($validator->fails()) {
-            return response()->json(['error'=>$validator->errors()], 401);
-        }
-
-        $post = Post::find($id);
-        $post->title = $request->title;
-        $post->body = $request->body;
-        $post->user_id = $request->user_id;
-        $post->save();
-        return response()->json($post);
+        $post=Post::find($id);
+        $user=User::select(
+            'name',
+        )->get(); 
+        return response()->json(['post'=>$post,'user'=>$user]);
     }
-    public function apiDestroy($id){
-        $post = Post::find($id);
-        $post->delete();
-        return response()->json($post);
-    }
-    
 }

@@ -1,9 +1,14 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\FollowController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\VoteController;
+use App\Models\Role;
+
 // use App\Http\Controllers\AdminController;
 /*
 |--------------------------------------------------------------------------
@@ -40,13 +45,27 @@ Route::controller(PostController::class)->group(function(){
 Route::controller(ProfileController::class)->group(function(){
     Route::get('/profile/{user}','profile')->name('profile');
     Route::get('/status','status')->name('status');
-    Route::post('/like/{id}','like')->name('like');
+    Route::post('/like/{id}','like')->name('like')->middleware('only-auth');
     Route::post('/bio','AddBio')->name('AddBio')->middleware('only-auth');
     
 });
+Route::post('/follow/{id}',[FollowController::class,'follow'])->name('follow')->middleware('only-auth');
+Route::middleware('only-auth')->controller(VoteController::class)->group(function(){
+    Route::post('/upvote/{slug:slug}','vote')->name('upvote');
+    Route::post('/downvote/{slug:slug}','downvote')->name('downvote');
+});
 
 
-Route::view('/admin/index','admin.index');
+//admin routes
+Route::middleware('is-admin')->prefix('admin')->group(function () {
+    Route::controller(AdminController::class)->group(function(){
+        Route::get('/index','index')->name('index');
+        Route::delete('users/{username:username}','delete')->name('users.delete');
+        Route::get('/userposts','userposts')->name('userposts');
+    });
+
+    
+});
 
  
 

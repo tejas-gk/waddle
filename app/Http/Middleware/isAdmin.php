@@ -18,10 +18,9 @@ class isAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if(auth()->user()->is_admin == 2){
+        if (Auth::check() && Auth::user()->role_id==2) {
             return $next($request);
         }
-
-        return redirect('/')->with('error', 'You are not authorized to access this page.');
+        return redirect('/');
     }
 }

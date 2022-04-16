@@ -63,9 +63,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class);
     }
-    public function likes()
+    public function votes()
     {
-        return $this->hasMany(Like::class);
+        return $this->hasMany(Vote::class);
     }
     public function isOnline()
     {

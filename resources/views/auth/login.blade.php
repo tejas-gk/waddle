@@ -46,3 +46,21 @@
         </form>
     </x-jet-authentication-card>
 </x-guest-layout>
+
+<script>
+    //show passwrord
+    var password = document.getElementById("password");
+    var show = document.getElementById("show");
+    var eye = document.getElementById("eye");
+    show.addEventListener("click", function() {
+        if (password.type === "password") {
+            password.type = "text";
+            eye.classList.remove("fa-eye");
+            eye.classList.add("fa-eye-slash");
+        } else {
+            password.type = "password";
+            eye.classList.remove("fa-eye-slash");
+            eye.classList.add("fa-eye");
+        }
+    });
+</script>

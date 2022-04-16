@@ -26,7 +26,7 @@
             <div class="mt-4">
                 <x-jet-label for="username" value="{{ __('Gender') }}" />
                <select name="gender">
-                   <option value="buisness" name="buisness default gender">default</option>
+                  
                    <option value="male" name="male gender">male</option>
                    <option value="female" name="female gender">female</option>
                </select>

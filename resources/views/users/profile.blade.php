@@ -7,15 +7,17 @@
 
 
 {{$user->name}}
-
+{{$user->id}}
 @if($user->bio!=null)
 <p>{{$user->bio}}</p>
 @else
 <p>No bio</p>
 @endif
-<div class="bio">
+
+
 @if(!Auth::guest() && Auth::user()->id == $user->id)
-    <form action="/bio" method="post">
+    <form action="/bio" method="post" class="bio">
+        <label for="bio">bio</label>
         <input type="text" placeholder="bio" name="bio">
         {{csrf_field()}}
         
@@ -23,9 +25,12 @@
     </form>
     
     @elseif(!Auth::guest() && Auth::user()->id != $user->id)
-    <a href="#">follow</a>
+    <form action="{{route('follow',['id'=>$user->id])}}" method="post">
+        {{csrf_field()}}
+        <button type="submit" class="follow">follow</button>
+    </form>
     @endif
-</div>
+
     
     <br>
     <a href="#">followers</a>
@@ -35,7 +40,6 @@
     @foreach($posts as $post)
     <b>
         {{$post->post}}</b>|
-        <a href="/upvote/{{$post->slug}}" class="upvote" name="upvote">upvote[+]</a>
         <br>
         {{ \Carbon\Carbon::parse($post->created_at)->diffForHumans() }}
         
@@ -48,27 +52,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <script type="text/javascript">
-    $('.bio').ready(function(){
-        $('.submitBio').click(function(e){
-            e.preventDefault();
-            var bio = $('input[name=bio]').val();
-            var username = $('input[name=username]').val();
-            var token=$('input[name=_token]').val();
-            $.ajax({
-                type: 'POST',
-                url: '/bio',
-            
-                data: {
-                    '_token': token,
-                    'bio': bio,
-                    'username': username
-                },
-                success: function(data){
-                   console.log(data.success);
-                }
-            });
-        });
-    });
-  
+
 
 </script>
