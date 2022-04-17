@@ -13,22 +13,32 @@ class FollowController extends Controller
       public function follow(Request $request){
              $follow = new Follow;
              $user=new User;
-             $getUser=$user->where('username',$request->username)->first();
-             $isFollowing=$follow->where('user_id',Auth::user()->id)->where('follow_id',$getUser)->first(); 
-             $followId=User::select('id')->where('username',$request->username)->first();
+             $getUserId=$user->where('id',$request->id)->first();
+             $isFollowing=$follow->where('user_id',Auth::user()->id)->where('follow_id',$getUserId->id)->first(); 
+            
             if($isFollowing){
-              $follow->where('user_id',Auth::user()->id)->where('follow_id',$getUser)->delete();
+              $follow->where('user_id',Auth::user()->id)->where('follow_id',$getUserId->id)->delete();
               return redirect()->back();
             }
             $follow=Follow::create(
             [
                 'user_id'=>Auth::user()->id,
-                'follow_id'=>$followId,
-            #bug:- follow id not getting inputted
-
+                'follow_id'=>$getUserId->id,
+             
             ],
           );      
              $follow->save();
              return redirect()->back();
+      }
+      public function followers(){# I clearly have a lot to learn
+        $user=new User;
+        $follow=new Follow;
+        $followers=$follow->where('follow_id',Auth::user()->id)->get();
+        $followers_id=[];
+        foreach($followers as $follower){
+          $followers_id[]=$follower->user_id;
+        }
+        $followers_user=$user->whereIn('id',$followers_id)->get();
+        return view('users.followers',compact('followers_user','user'));
       }
 }

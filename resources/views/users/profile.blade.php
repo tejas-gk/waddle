@@ -7,7 +7,6 @@
 
 
 {{$user->name}}
-{{$user->id}}
 @if($user->bio!=null)
 <p>{{$user->bio}}</p>
 @else
@@ -27,7 +26,7 @@
     @elseif(!Auth::guest() && Auth::user()->id != $user->id)
     <form action="{{route('follow',['id'=>$user->id])}}" method="post">
         {{csrf_field()}}
-        <button type="submit" class="follow">follow</button>
+        <button type="submit" class="follow" name="follow">follow</button>
     </form>
     @endif
 
@@ -49,9 +48,44 @@
 <img src="{{asset('/storage/'.$user->profile_photo_path)}}" width="100" height="100" style="border-radius: 50%">
 
 @endif
+
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-<script type="text/javascript">
+<script>
+    var routes='{{route('follow',['id'=>$user->id])}}';
+    var token='{{csrf_token()}}';
+    var ifClicked='button[name="follow"]';
+
+
+ $(document).ready(function() {
+        $('button[name="follow"]').click(function(e) {
+            e.preventDefault();
+         
+            $.ajax({
+                url:routes,
+                method: 'post',
+                data: {
+                    _token: $('input[name="_token"]').val()
+                },
+                success: function(data) {
+                    console.log(data.success);
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+            });
+        });
+    });
 
 
 </script>
+
+
+
+
+
+
+
+

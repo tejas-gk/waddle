@@ -43,13 +43,14 @@ Route::controller(PostController::class)->group(function(){
  * 
  */
 Route::controller(ProfileController::class)->group(function(){
-    Route::get('/profile/{user}','profile')->name('profile');
+    Route::get('/profile/{user:username}','profile')->name('profile');
     Route::get('/status','status')->name('status');
     Route::post('/like/{id}','like')->name('like')->middleware('only-auth');
     Route::post('/bio','AddBio')->name('AddBio')->middleware('only-auth');
     
 });
 Route::post('/follow/{id}',[FollowController::class,'follow'])->name('follow')->middleware('only-auth');
+Route::get('/followers/{user:username}',[FollowController::class,'followers'])->name('followers');
 Route::middleware('only-auth')->controller(VoteController::class)->group(function(){
     Route::post('/upvote/{slug:slug}','vote')->name('upvote');
     Route::post('/downvote/{slug:slug}','downvote')->name('downvote');

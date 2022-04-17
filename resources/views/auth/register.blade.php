@@ -35,11 +35,13 @@
             <div class="mt-4">
                 <x-jet-label for="password" value="{{ __('Password') }}" />
                 <x-jet-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
+                
             </div>
 
             <div class="mt-4">
                 <x-jet-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
                 <x-jet-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
+                <span id="show_password" class="success">show password</span>
             </div>
 
             @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
@@ -71,3 +73,20 @@
         </form>
     </x-jet-authentication-card>
 </x-guest-layout>
+
+
+<script>
+    //show password
+    var password = document.getElementById("password")
+    var confirm_password = document.getElementById("password_confirmation")
+    document.querySelector('#show_password').addEventListener('click', function() {
+        if (password.type === "password") {
+            password.type = "text"
+            confirm_password.type = "text"
+        } else {
+            password.type = "password"
+            confirm_password.type = "password"
+        }
+    })
+
+</script>

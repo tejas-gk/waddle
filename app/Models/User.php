@@ -72,20 +72,21 @@ class User extends Authenticatable
         return Cache::has('user-is-online-' . $this->id);
     }
 
-    public function getRouteKeyName()
+   public function follow()
+   {
+       return $this->hasMany(Follow::class);
+   }
+    public function following( )
     {
-        return 'username';
+         return $this->belongsToMany(User::class, 'follows', 'user_id', 'follow_id');
     }
-
-    public function defaultProfilePhotoUrl()
+    public function followers()
     {
-        return 'https://ui-avatars.com/api'. implode('/', [
-
-            //IMPORTANT: Do not change this order
-            urlencode($this->name), // name
-            200, // image size
-            'EBF4FF', // background color
-            '7F9CF5', // font color
-        ]);
+        return $this->belongsToMany(User::class, 'follows', 'follow_id', 'user_id');
     }
+  public function isFollowing(User $user)
+  {
+      return (int) $this->following()->where('follow_id', $user->id)->count();
+  }
+
 }
