@@ -41,6 +41,7 @@ admin
 hey
 @endcan
 <link rel="stylesheet" href="{{asset('css/profile.scss')}}">
+
 @can('isPrivate')
     view
 @endcan

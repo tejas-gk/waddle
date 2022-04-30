@@ -15,7 +15,7 @@ class PostController extends Controller
 {
     // public function __construct()
     // {
-    //     $this->middleware('view:create,App\Models\Post')->only(['create', 'store']);
+    //   $this->authorize(User::class);
     // }
    
     /**
