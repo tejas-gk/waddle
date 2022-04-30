@@ -1,10 +1,8 @@
-<h1>followers</h1>
-@foreach($followers as $follower)
+<h1>Following</h1>
+@foreach($following as $follow)
     <div class="row">
         <div class="col-md-6">
-         {{ $follower->name }}
+         {{ $follow->name }}
         </div>
     </div>
 @endforeach
-
-

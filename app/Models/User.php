@@ -35,6 +35,8 @@ class User extends Authenticatable
      *
      * @var array
      */
+  
+
     protected $hidden = [
         'password',
         'remember_token',
@@ -84,9 +86,6 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(User::class, 'follows', 'follow_id', 'user_id');
     }
-  public function isFollowing(User $user)
-  {
-      return (int) $this->following()->where('follow_id', $user->id)->count();
-  }
+ 
 
 }

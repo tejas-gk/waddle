@@ -30,15 +30,13 @@ class FollowController extends Controller
              $follow->save();
              return redirect()->back();
       }
-      public function followers(){# I clearly have a lot to learn
-        $user=new User;
-        $follow=new Follow;
-        $followers=$follow->where('follow_id',Auth::user()->id)->get();
-        $followers_id=[];
-        foreach($followers as $follower){
-          $followers_id[]=$follower->user_id;
-        }
-        $followers_user=$user->whereIn('id',$followers_id)->get();
-        return view('users.followers',compact('followers_user','user'));
+
+      public function followers(User $user){# I clearly have a lot to learn
+        $followers=$user->followers()->get();
+        return view('users.followers',compact('followers','user'));
+      }
+      public function following(User $user){# I clearly have a lot to learn
+        $following=$user->following()->get();
+        return view('users.following',compact('following','user'));
       }
 }

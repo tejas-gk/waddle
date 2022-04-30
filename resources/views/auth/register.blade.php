@@ -43,6 +43,8 @@
                 <x-jet-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
                 <span id="show_password" class="success">show password</span>
             </div>
+            
+            createAutoTeams      <x-jet-checkbox name="createAutoTeams" id="createAutoTeams"/>
 
             @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
                 <div class="mt-4">

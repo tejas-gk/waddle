@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Facade;
 
 return [
-
+    'Gate' => Illuminate\Support\Facades\Gate::class,
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -178,7 +178,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
-
+        'Barryvdh\Debugbar\ServiceProvider',
     ],
 
     /*
@@ -194,6 +194,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'Debugbar' => 'Barryvdh\Debugbar\Facade',
     ])->toArray(),
-
+    
 ];

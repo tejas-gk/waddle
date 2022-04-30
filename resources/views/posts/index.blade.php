@@ -2,7 +2,7 @@
 <a href="/">home</a>
 @if(!Auth::guest())
 <form action="/store" method="post">
-    <input type="text" name="post" placeholder="post a post"><br>
+    <textarea type="text" name="post" placeholder="post a post" autofocus style="resize:none;"></textarea><br>
     
     {{csrf_field()}}
     <input type="submit" name="submit" value="submit">
@@ -32,6 +32,21 @@
     @endforeach
     {{ $posts->links() }}
 </ul>
+
+@can('isAdmin')
+admin
+@endcan
+
+@can(['can-delete','can-force-delete'],$post)
+hey
+@endcan
+<link rel="stylesheet" href="{{asset('css/profile.scss')}}">
+@can('isPrivate')
+    view
+@endcan
+
+
+
 
 <style>
     ul.pagination {
@@ -71,5 +86,27 @@ padding:2px;
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <script>
-   
+    var routes='{{route('posts.show',['id'=>$post->id])}}';
+    var token='{{csrf_token()}}';
+
+
+ $(document).ready(function() {
+     
+    $('button[name="submit"]').click(function(e) {
+            e.preventDefault();
+            $.ajax({
+                url:routes,
+                method: 'get',
+                datatype: 'jsonp',
+                success: function(data) {
+                    console.log(data.success);
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+            });
+        });
+    });
+
+
 </script>

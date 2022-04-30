@@ -7,7 +7,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VoteController;
-use App\Models\Role;
+use App\Models\User;
 
 // use App\Http\Controllers\AdminController;
 /*
@@ -51,6 +51,7 @@ Route::controller(ProfileController::class)->group(function(){
 });
 Route::post('/follow/{id}',[FollowController::class,'follow'])->name('follow')->middleware('only-auth');
 Route::get('/followers/{user:username}',[FollowController::class,'followers'])->name('followers');
+Route::get('/following/{user:username}',[FollowController::class,'following'])->name('following');
 Route::middleware('only-auth')->controller(VoteController::class)->group(function(){
     Route::post('/upvote/{slug:slug}','vote')->name('upvote');
     Route::post('/downvote/{slug:slug}','downvote')->name('downvote');

@@ -12,12 +12,12 @@
 @else
 <p>No bio</p>
 @endif
-
+joined at  {{ \Carbon\Carbon::parse($user->created_at)->diffForHumans() }}
 
 @if(!Auth::guest() && Auth::user()->id == $user->id)
     <form action="/bio" method="post" class="bio">
         <label for="bio">bio</label>
-        <input type="text" placeholder="bio" name="bio">
+        <input type="text" placeholder="bio" name="bio" class="bio">
         {{csrf_field()}}
         
         <button type="submit" class="submitBio">submit</button>
@@ -26,7 +26,7 @@
     @elseif(!Auth::guest() && Auth::user()->id != $user->id)
     <form action="{{route('follow',['id'=>$user->id])}}" method="post">
         {{csrf_field()}}
-        <button type="submit" class="follow" name="follow">follow</button>
+        <button type="submit" class="follow color-white" name="follow">follow</button>
     </form>
     @endif
 
@@ -49,7 +49,8 @@
 
 @endif
 
-
+<link rel="stylesheet" href="{{asset('css/profile.scss')}}">
+<x-charts/>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
@@ -81,6 +82,9 @@
 
 
 </script>
+
+
+
 
 
 
