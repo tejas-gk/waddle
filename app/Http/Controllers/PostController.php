@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Auth\Access\Gate;
+Use Sentiment\Analyzer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -13,10 +14,7 @@ use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
-    // public function __construct()
-    // {
-    //   $this->authorize(User::class);
-    // }
+
    
     /**
      * Display a listing of the resource.
@@ -51,20 +49,24 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $post=new Post;
-       
+        $analyzer = new Analyzer(); 
         $post->post=$request->post;
         $str=Str::random(5).time();
         $post->slug=Str::slug($request->post).$str;
         
         $post->user_id=Auth::user()->id;
-        if($request->hasFile('image')){
-            $image=$request->file('image');
+        if($request->hasFile('postImage')){
+            $image=$request->file('postImage');
             $image_name=time().'.'.$image->getClientOriginalExtension();
-            $destinationPath=public_path('/images');
+            $destinationPath=public_path('/storage/posts');
             $image->move($destinationPath,$image_name);
             $post->image=$image_name;
         }
-
+        $output_text = $analyzer->getSentiment($post->post);
+        $post->pos=$output_text['pos'];
+        $post->neg=$output_text['neg'];
+        $post->net=$output_text['neu'];
+        if($post->post!=null ||$post->image!=null)
         $post->save();
         return redirect('/posts');
     }
@@ -140,10 +142,33 @@ class PostController extends Controller
      */
     public function delete($id)
     {
-        DB::table('posts')->where('id',$id)->delete();
+        Post::find($id)->delete();
         return redirect('/posts');
     }
-    // from here transfer to profilecontroller
+    
+    public function restore($id)
+    {
+        Post::withTrashed()->find($id)->restore();
+  
+        return redirect()->back();
+    }  
+    public function restoreAll()
+    {
+        Post::onlyTrashed()->restore();
+  
+        return redirect()->back();
+    }
+    public function onlyDeleted(Request $request)
+    {
+        if ($request->has('trashed')) {
+            $posts = Post::onlyTrashed()
+                ->get();
+        } else {
+            $posts = Post::get();
+        }
+
+        return view('posts', compact('posts'));
+    }
 
    
 }

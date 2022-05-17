@@ -13,5 +13,6 @@
             </div>
         </div>
     </div>
-    
+    @yield('layouts.followfield')
+   
 </x-app-layout>

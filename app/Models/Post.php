@@ -8,16 +8,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
-    use HasFactory;
-    // protected $table = 'posts';
+    use HasFactory,SoftDeletes;
+    
+
     protected $fillable = ['post','image','user_id'];
     public function user(){
         return $this->belongsTo('App\Models\User');
     }
     public function votes()
-{
+    {
         return $this->hasMany('App\Models\Like');
     }
+    
+
 
    
 }

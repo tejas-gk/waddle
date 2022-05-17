@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use App\Models\Team;
 use App\Models\User;
-use App\Models\Post;
 use App\Policies\TeamPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -32,7 +31,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('isAdmin', function($user) {
-            return $user->role_id == 1;
+            return true;
          });
          Gate::define('can-delete',[UserPolicy::class,'delete']);
         //  Gate::define('isPrivate',[UserPolicy::class,'isPrivate']);

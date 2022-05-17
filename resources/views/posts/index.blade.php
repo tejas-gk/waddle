@@ -1,14 +1,15 @@
 <h1>posts</h1>
 <a href="/">home</a>
 @if(!Auth::guest())
-<form action="/store" method="post">
+<form action="/store" method="post" enctype="multipart/form-data" wire:submit.prevent="post">
     <textarea type="text" name="post" placeholder="post a post" autofocus style="resize:none;"></textarea><br>
-    
+    <input type="file" name="postImage" id="postImage">
     {{csrf_field()}}
     <input type="submit" name="submit" value="submit">
 </form>
 @endif
 
+@if($posts->count()>0)
 <ul>
    @foreach($posts as $post)
     
@@ -23,30 +24,30 @@
         {{-- <a href="#" class="like">{{ Auth::user()->likes()->where('post_id', $post->id)->first() ? Auth::user()->likes()->where('post_id', $post->id)->first()->like == 1 ? 'You like this post' : 'Like' : 'Like'  }}</a> | --}}
 
     @endif
-    
+    @if($post->image!=null)
+    <img src="{{ asset('storage/posts/'.$post->image) }}" alt="job image" title="job image" class="postImage">
+    @endif
     <br>{{$post->created_at->diffForHumans()}}</li>
-    
+   
     
 </li>
     <hr>
     @endforeach
     {{ $posts->links() }}
 </ul>
-
+@endif
 @can('isAdmin')
 admin
 @endcan
 
-@can(['can-delete','can-force-delete'],$post)
-hey
-@endcan
-<link rel="stylesheet" href="{{asset('css/profile.scss')}}">
 
 @can('isPrivate')
-    view
+view
 @endcan
 
 
+
+<link rel="stylesheet" href="{{asset('css/profile.scss')}}">
 
 
 <style>
@@ -82,32 +83,9 @@ padding:2px;
 
 }
 
+.postImage{
+    width:100px;
+    height:100px;
+}
 </style>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-<script>
-    var routes='{{route('posts.show',['id'=>$post->id])}}';
-    var token='{{csrf_token()}}';
-
-
- $(document).ready(function() {
-     
-    $('button[name="submit"]').click(function(e) {
-            e.preventDefault();
-            $.ajax({
-                url:routes,
-                method: 'get',
-                datatype: 'jsonp',
-                success: function(data) {
-                    console.log(data.success);
-                },
-                error: function(data) {
-                    console.log(data);
-                }
-            });
-        });
-    });
-
-
-</script>

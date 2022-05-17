@@ -4,9 +4,9 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FollowController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VoteController;
+use App\Http\Controllers\AnalyticsController;
 use App\Models\User;
 
 // use App\Http\Controllers\AdminController;
@@ -69,7 +69,7 @@ Route::middleware('is-admin')->prefix('admin')->group(function () {
     
 });
 
- 
+ Route::get('post-chart',[AnalyticsController::class,'postChart'])->name('post-chart');
 
 Route::middleware([
     'auth:sanctum',

@@ -9,6 +9,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class UserPolicy
 {
     use HandlesAuthorization;
+    
      public function isPrivate(){
         return true;
       
@@ -17,6 +18,7 @@ class UserPolicy
     {
         return true;
     }
+    
 
     /**
      * Determine whether the user can view the model.
