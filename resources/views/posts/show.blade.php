@@ -3,12 +3,14 @@
 
 <form action="{{route('upvote', ['slug' => $post->slug])}}" method="post">
     @csrf
-    <button type="submit" name="upvote">upvote</button>{{count(array($post->upvotes))}}
+    <button type="submit" name="upvote">upvote</button>{{$post->getUpvoteAttribute()}}
 </form>
+
 <form action="{{route('downvote', ['slug' => $post->slug])}}" method="post">
     @csrf
-    <button type="submit" name="downvote">downvote</button>{{count(array($post->upvotes))}}
+    <button type="submit" name="downvote">downvote</button>{{$post->getDownvoteAttribute()}}
 </form>
+
 
 
 

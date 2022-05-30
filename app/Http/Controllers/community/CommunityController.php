@@ -18,8 +18,8 @@ class communityController extends Controller
     public function createNewCommunity(Request $request)
     {
         $community = DB::table('communities')->insert([
-            'community_name' => $request->name,
-            'community_description' => $request->description,
+            'community_name' => $request->community_name,
+            'community_description' => $request->community_description,
             'summary' => $request->summary,
             'community_image' => $request->community_image,
             'community_banner'=>$request->banner,
@@ -33,8 +33,11 @@ class communityController extends Controller
             $image->move(public_path('/storage/community_image'),$image_name);
             $image_path=public_path('images/'.$image_name);
             $community=DB::table('communities')->where('community_image',$request->community_image);
-            // $image->save();
+          
         }
+        
+        //save
+        
 
         return redirect()->back()->with('success','Community Created Successfully');
     }

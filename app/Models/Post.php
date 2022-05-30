@@ -20,10 +20,14 @@ class Post extends Model
     }
     public function votes()
     {
-        return $this->hasMany('App\Models\Like');
+        return $this->hasMany('App\Models\Vote');
     }
-    
-
-
-   
+    public function getUpvoteAttribute()
+    {
+        return $this->hasMany('App\Models\Vote')->where('upvote',1)->count();
+    }
+    public function getDownvoteAttribute()
+    {
+        return $this->hasMany('App\Models\Vote')->where('downvote',1)->count();
+    }
 }

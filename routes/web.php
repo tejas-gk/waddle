@@ -73,10 +73,11 @@ Route::middleware('is-admin')->prefix('admin')->group(function () {
 
  Route::get('post-chart',[AnalyticsController::class,'postChart'])->name('post-chart');
 
+Route::post('/vote/{slug:slug}',[VoteController::class,'ifOtherVoteIsClicked'])->name('vote');
 
- Route::view('/create-community', 'community.create-communtiy')->middleware('only-auth');
  Route::post('/create-new-community',[CommunityController::class,'createNewCommunity'])->middleware('only-auth');
-
+ Route::get('/new-community',[CommunityController::class,'community'])->name('community');
+ 
  Route::resource('community', postsController::class);
 
 

@@ -19,13 +19,14 @@ class Community extends Model
         'updated_at'
     
     ];
+
     public function user()
     {
         return $this->belongsTo('App\Models\User','admin_id');
     }
     public function posts()
     {
-        return $this->hasMany('App\Models\Post','community_id');
+        return $this->morphMany('App\Models\Post','postable');
     }
     public function comments()
     {

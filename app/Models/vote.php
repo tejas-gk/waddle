@@ -18,4 +18,7 @@ class Vote extends Model
     {
         return $this->belongsTo('App\Models\Post');
     }
+  
+   
+
 }

@@ -16,20 +16,13 @@ class postsController extends Controller
 {
      
     public $post_type='community';
-    public function post_id(){
-        return $post_id=Community::select('id')->where('name',request()->community_name)->first()->id;
-    }
+
     public  function index()
     {   
-       
-        return view('community.community-posts.index');
+        $communities = DB::table('communities')->get();//as of now this much is enough in the future show only joined communities
+        return view('community.community-posts.index', compact('communities'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         
@@ -50,7 +43,7 @@ class postsController extends Controller
         $str=Str::random(5).time();
         $post->slug=Str::slug($request->post).$str;
         $post->postable_type=$this->post_type;
-        $post->postable_id=$this->post_id();
+        $post->postable_id=$request->communityName;
         $post->user_id=Auth::user()->id;
         if($request->hasFile('postImage')){
             $image=$request->file('postImage');
@@ -63,6 +56,7 @@ class postsController extends Controller
         $post->pos=$output_text['pos'];
         $post->neg=$output_text['neg'];
         $post->net=$output_text['neu'];
+        
         if($post->post!=null ||$post->image!=null)
         $post->save();
         return redirect('/community');
