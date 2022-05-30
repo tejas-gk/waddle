@@ -1,4 +1,5 @@
 {{-- {{banner}} --}}
+{{$user->username}}
 @if(Cache::has('is_online' . $user->id))
 <span class="text-success" style="color: green">Online</span>
 @else
@@ -6,7 +7,8 @@
 @endif
 
 
-{{$user->name}}
+{{$user->name}}<br>
+reputation:{{$user->reputation}}
 @if($user->bio!=null)
 <p>{{$user->bio}}</p>
 @else
@@ -32,16 +34,21 @@ joined at  {{ \Carbon\Carbon::parse($user->created_at)->diffForHumans() }}
 
     
     <br>
-    <a href="#">followers</a>
-    <a href="#">following</a>
+    <a href="{{route('followers',$user->username)}}">followers</a>
+    <a href="{{route('following',$user->username)}}">following</a>
     <hr><hr>
     <br>
+    {{-- @if($user->id==$posts->user_id)
+    <x-posts/>
+    @endif --}}
     @foreach($posts as $post)
     <b>
         {{$post->post}}</b>|
         <br>
         {{ \Carbon\Carbon::parse($post->created_at)->diffForHumans() }}
-        
+        @if($post->image!=null)
+        <img src="{{ asset('storage/posts/'.$post->image) }}" alt="job image" title="job image" class="postImage">
+        @endif
         <hr>
         @endforeach 
 @if($user->profile_photo_path!=NULL)        
@@ -50,7 +57,7 @@ joined at  {{ \Carbon\Carbon::parse($user->created_at)->diffForHumans() }}
 @endif
 
 <link rel="stylesheet" href="{{asset('css/profile.scss')}}">
-<x-charts/>
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 

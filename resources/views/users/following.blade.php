@@ -2,7 +2,7 @@
 @foreach($following as $follow)
     <div class="row">
         <div class="col-md-6">
-         {{ $follow->name }}
+            <a href="{{route('profile',$follow->username)}}">{{ $follow->name }}</a>
         </div>
     </div>
 @endforeach

@@ -63,7 +63,7 @@ class User extends Authenticatable
     ];
     public function posts()
     {
-        return $this->hasMany(Post::class);
+        return $this->morphMany(Post::class,'postable');
     }
     public function votes()
     {
@@ -86,6 +86,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(User::class, 'follows', 'follow_id', 'user_id');
     }
- 
+    public function community()
+    {
+        return $this->hasMany(Community::class);
+    }
 
 }

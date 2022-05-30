@@ -1,35 +1,28 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\community;
 
+use App\Http\Controllers\Controller;
+use App\Models\Community;
 use App\Models\Post;
 use App\Models\User;
-use Illuminate\Auth\Access\Gate;
 Use Sentiment\Analyzer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-
-class PostController extends Controller
+class postsController extends Controller
 {
-
-   
-    public $post_type='user';
+     
+    public $post_type='community';
     public function post_id(){
-        return $post_id=Auth::user()->id;
-    }//if I return this normally it gives me error
-    
-    public function index()
+        return $post_id=Community::select('id')->where('name',request()->community_name)->first()->id;
+    }
+    public  function index()
     {   
-        
-        $posts=Post::orderBy('id','DESC')->where(
-            'postable_type','user'
-    
-        )->paginate(5);
-        $user=User::select('name')->get();
-        return view('posts.index',compact('posts','user'));
+       
+        return view('community.community-posts.index');
     }
 
     /**
@@ -72,7 +65,7 @@ class PostController extends Controller
         $post->net=$output_text['neu'];
         if($post->post!=null ||$post->image!=null)
         $post->save();
-        return redirect('/posts');
+        return redirect('/community');
     }
 
     /**
@@ -173,6 +166,4 @@ class PostController extends Controller
 
         return view('posts', compact('posts'));
     }
-
-   
 }

@@ -6,8 +6,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VoteController;
+use App\Http\Controllers\community\CommunityController;
 use App\Http\Controllers\AnalyticsController;
-use App\Models\User;
+use App\Http\Controllers\community\postsController;
+
 
 // use App\Http\Controllers\AdminController;
 /*
@@ -70,6 +72,14 @@ Route::middleware('is-admin')->prefix('admin')->group(function () {
 });
 
  Route::get('post-chart',[AnalyticsController::class,'postChart'])->name('post-chart');
+
+
+ Route::view('/create-community', 'community.create-communtiy')->middleware('only-auth');
+ Route::post('/create-new-community',[CommunityController::class,'createNewCommunity'])->middleware('only-auth');
+
+ Route::resource('community', postsController::class);
+
+
 
 Route::middleware([
     'auth:sanctum',

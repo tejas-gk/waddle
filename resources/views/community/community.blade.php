@@ -9,8 +9,6 @@
          <button wire:click="count">Say Hi</button>
         
  @livewireScripts
-     {{ $email }}
-     {{$count}}
-   
+    
  
 </div>

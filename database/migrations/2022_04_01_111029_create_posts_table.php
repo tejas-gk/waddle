@@ -20,6 +20,7 @@ return new class extends Migration
             $table->text('post')->nullable();
             $table->string('slug')->unique();
             $table->integer('pinned')->nullable();
+            $table->morphs('postable');
      
             $table->string('image')->nullable();
             $table->unsignedBigInteger('user_id');

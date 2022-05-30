@@ -4,7 +4,10 @@ namespace App\Http\Controllers\community;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Model\User;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\Models\Community;
 class communityController extends Controller
 {
      /**
@@ -12,75 +15,32 @@ class communityController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function createNewCommunity(Request $request)
     {
-        //
-    }
+        $community = DB::table('communities')->insert([
+            'community_name' => $request->name,
+            'community_description' => $request->description,
+            'summary' => $request->summary,
+            'community_image' => $request->community_image,
+            'community_banner'=>$request->banner,
+            'admin_id' => Auth::user()->id,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
+        if($request->hasFile('community_image')){
+            $image=$request->file('community_image');
+            $image_name=time().'.'.$image->getClientOriginalExtension();
+            $image->move(public_path('/storage/community_image'),$image_name);
+            $image_path=public_path('images/'.$image_name);
+            $community=DB::table('communities')->where('community_image',$request->community_image);
+            // $image->save();
+        }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return redirect()->back()->with('success','Community Created Successfully');
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function community()
     {
-        
-        
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $communities = DB::table('communities')->get();
+        return view('community.community-page.community-home-page', compact('communities'));
     }
 }

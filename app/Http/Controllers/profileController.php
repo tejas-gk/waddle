@@ -20,7 +20,7 @@ class ProfileController extends Controller
     
     public function profile(User $user){
        
-        $user=DB::table('users')->select(array('name','id','bio','profile_photo_path','created_at'))->where('id', '=', $user->id)->first();
+        $user=DB::table('users')->select(array('name','id','bio','profile_photo_path','created_at','username','reputation'))->where('id', '=', $user->id)->first();
         
         $posts=DB::table('posts')->select(array('post','id','image','slug','created_at','user_id','updated_at'))->where('user_id', '=', $user->id)->get();
         

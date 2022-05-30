@@ -11,9 +11,12 @@ class Post extends Model
     use HasFactory,SoftDeletes;
     
 
-    protected $fillable = ['post','image','user_id'];
+    protected $fillable = ['post','image','user_id','postable_type','postable_id'];
     public function user(){
         return $this->belongsTo('App\Models\User');
+    }
+    public function postable() {
+        return $this->morphTo();
     }
     public function votes()
     {

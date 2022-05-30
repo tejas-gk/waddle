@@ -10,7 +10,7 @@
     <button type="submit" name="downvote">downvote</button>{{count(array($post->upvotes))}}
 </form>
 
-<x-charts />
+
 
 
 
