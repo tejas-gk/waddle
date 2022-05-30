@@ -1,4 +1,6 @@
 <h1>posts</h1>
+@livewireScripts
+@livewireStyles
 <a href="/">home</a>
 @if(!Auth::guest())
 <form action="/store" method="post" enctype="multipart/form-data" wire:submit.prevent="post">
@@ -10,7 +12,8 @@
 @endif
 
 @if($posts->count()>0)
-<x-posts/>
+<livewire:search />
+{{-- <x-posts/> --}}
 @endif
 @can('isAdmin')
 admin
