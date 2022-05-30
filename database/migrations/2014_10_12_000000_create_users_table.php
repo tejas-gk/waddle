@@ -22,11 +22,13 @@ return new class extends Migration
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->text('profile_photo_path', 2048)->nullable();
-            $table->boolean('is_public_account')->default(false);
+            $table->boolean('is_private')->default(false);
             $table->string('username')->unique();
-            $table->text('bio')->nullable();
+            $table->text('bio')->nullable(); 
             $table->unsignedBigInteger('phone_no')->nullable();
+            $table->text('summary')->nullable();
             
+            $table->bigInteger('reputation')->default(1);
             $table->string('website')->nullable();
             $table->string('gender')->nullable();
             $table->string('location')->nullable();

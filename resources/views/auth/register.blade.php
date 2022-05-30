@@ -6,17 +6,19 @@
 
         <x-jet-validation-errors class="mb-4" />
 
-        <form method="POST" action="{{ route('register') }}">
+        <form method="POST" action="{{ route('register') }}" wire:submit.prevent="Auth">
             @csrf
-
+ 
             <div>
                 <x-jet-label for="name" value="{{ __('Name') }}" />
                 <x-jet-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
             </div>
 
             <div class="mt-4">
-                <x-jet-label for="email" value="{{ __('Email') }}" />
+                <x-jet-label for="email" value="{{ __('Email') }}" wire:model="email"/>
                 <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
+                @error('email') <span class="error">{{ $message }}</span> @enderror
+               
             </div>
 
             <div class="mt-4">
@@ -26,21 +28,27 @@
             <div class="mt-4">
                 <x-jet-label for="username" value="{{ __('Gender') }}" />
                <select name="gender">
-                   <option value="buisness" name="buisness default gender">default</option>
+                  
                    <option value="male" name="male gender">male</option>
                    <option value="female" name="female gender">female</option>
                </select>
             </div>
 
             <div class="mt-4">
-                <x-jet-label for="password" value="{{ __('Password') }}" />
+                <x-jet-label for="password" value="{{ __('Password') }}"/>
                 <x-jet-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
+                
             </div>
-
+            
             <div class="mt-4">
                 <x-jet-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
-                <x-jet-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
+                <x-jet-input wire:model="password" id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
+            
+              
+                <span id="show_password" class="success">show password</span>
             </div>
+            
+   
 
             @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
                 <div class="mt-4">
@@ -71,3 +79,19 @@
         </form>
     </x-jet-authentication-card>
 </x-guest-layout>
+
+<script>
+    //show password
+    var password = document.getElementById("password")
+    var confirm_password = document.getElementById("password_confirmation")
+    document.querySelector('#show_password').addEventListener('click', function() {
+        if (password.type === "password") {
+            password.type = "text"
+            confirm_password.type = "text"
+        } else {
+            password.type = "password"
+            confirm_password.type = "password"
+        }
+    })
+
+</script>

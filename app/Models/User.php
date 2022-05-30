@@ -35,6 +35,8 @@ class User extends Authenticatable
      *
      * @var array
      */
+  
+
     protected $hidden = [
         'password',
         'remember_token',
@@ -61,31 +63,32 @@ class User extends Authenticatable
     ];
     public function posts()
     {
-        return $this->hasMany(Post::class);
+        return $this->morphMany(Post::class,'postable');
     }
-    public function likes()
+    public function votes()
     {
-        return $this->hasMany(Like::class);
+        return $this->hasMany(Vote::class);
     }
     public function isOnline()
     {
         return Cache::has('user-is-online-' . $this->id);
     }
 
-    public function getRouteKeyName()
+   public function follow()
+   {
+       return $this->hasMany(Follow::class);
+   }
+    public function following( )
     {
-        return 'username';
+         return $this->belongsToMany(User::class, 'follows', 'user_id', 'follow_id');
+    }
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'follows', 'follow_id', 'user_id');
+    }
+    public function community()
+    {
+        return $this->hasMany(Community::class);
     }
 
-    public function defaultProfilePhotoUrl()
-    {
-        return 'https://ui-avatars.com/api'. implode('/', [
-
-            //IMPORTANT: Do not change this order
-            urlencode($this->name), // name
-            200, // image size
-            'EBF4FF', // background color
-            '7F9CF5', // font color
-        ]);
-    }
 }

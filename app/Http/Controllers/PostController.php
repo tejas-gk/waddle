@@ -4,22 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Auth\Access\Gate;
+Use Sentiment\Analyzer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
+
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+   
+    public $post_type='user';
+    public function post_id(){
+        return $post_id=Auth::user()->id;
+    }//if I return this normally it gives me error
+    
     public function index()
-    {
-        $posts=Post::orderBy('id','DESC')->paginate(5);
-        $user=User::select('name')->get(); 
+    {   
+        
+        $posts=Post::orderBy('id','DESC')->where(
+            'postable_type','user'
+    
+        )->paginate(5);
+        $user=User::select('name')->get();
         return view('posts.index',compact('posts','user'));
     }
 
@@ -43,20 +52,25 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $post=new Post;
-       
+        $analyzer = new Analyzer(); 
         $post->post=$request->post;
-        $str=Str::random(10).time();
+        $str=Str::random(5).time();
         $post->slug=Str::slug($request->post).$str;
-        
+        $post->postable_type=$this->post_type;
+        $post->postable_id=$this->post_id();
         $post->user_id=Auth::user()->id;
-        if($request->hasFile('image')){
-            $image=$request->file('image');
+        if($request->hasFile('postImage')){
+            $image=$request->file('postImage');
             $image_name=time().'.'.$image->getClientOriginalExtension();
-            $destinationPath=public_path('/images');
+            $destinationPath=public_path('/storage/posts');
             $image->move($destinationPath,$image_name);
             $post->image=$image_name;
         }
-
+        $output_text = $analyzer->getSentiment($post->post);
+        $post->pos=$output_text['pos'];
+        $post->neg=$output_text['neg'];
+        $post->net=$output_text['neu'];
+        if($post->post!=null ||$post->image!=null)
         $post->save();
         return redirect('/posts');
     }
@@ -67,10 +81,14 @@ class PostController extends Controller
      * @param  \App\Models\Like  $like
      * @return \Illuminate\Http\Response
      */
+    
     public function show(Post $post, $id)
     {
-        
-
+        // if(Gate::allows('isAdmin')){
+        //     dd('post');
+        // }
+        // $this->authorize('isPrivate');
+    //    dd('hey');
         $post=Post::find($id);
         $user=User::select(
             'name',
@@ -128,29 +146,33 @@ class PostController extends Controller
      */
     public function delete($id)
     {
-        DB::table('posts')->where('id',$id)->delete();
+        Post::find($id)->delete();
         return redirect('/posts');
     }
-    // from here transfer to profilecontroller
+    
+    public function restore($id)
+    {
+        Post::withTrashed()->find($id)->restore();
+  
+        return redirect()->back();
+    }  
+    public function restoreAll()
+    {
+        Post::onlyTrashed()->restore();
+  
+        return redirect()->back();
+    }
+    public function onlyDeleted(Request $request)
+    {
+        if ($request->has('trashed')) {
+            $posts = Post::onlyTrashed()
+                ->get();
+        } else {
+            $posts = Post::get();
+        }
 
-    public function profile(User $user){
-       
-        $user=DB::table('users')->select(array('name','id','bio','profile_photo_path'))->where('id', '=', $user->id)->first();
-        $posts=DB::table('posts')->select(array('post','id','image','slug','created_at'))->where('user_id', '=', $user->id)->get();
-        
+        return view('posts', compact('posts'));
+    }
 
-        return view('users.profile', compact('user','posts'));
-    }
-    public function like(Post $post){
-        $post->like()->toggle(Auth::user()->id);
-        return back();
-        
-    }
-    public function AddBio(Request $request){
-        $user=User::find(Auth::user()->id);
-        $user->bio=$request->bio;
-        $user->save();
-        return back();
-    }
    
 }

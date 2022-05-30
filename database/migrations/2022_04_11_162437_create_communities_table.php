@@ -15,6 +15,15 @@ return new class extends Migration
     {
         Schema::create('communities', function (Blueprint $table) {
             $table->id();
+            $table->string('community_name');
+            $table->string('community_description');
+            $table->text('summary')->nullable();
+            $table->string('community_image')->nullable();
+            $table->string('community_banner')->nullable();
+            $table->unsignedBigInteger('admin_id');
+            
+            $table->foreign('admin_id')->references('id')->on('users')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

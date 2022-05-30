@@ -26,7 +26,8 @@ class UserSeeder extends Seeder
             'id' => 1,
             'remember_token' =>Str::random(10),
             'email_verified_at' => now(),
-            'username'=>'kryptoknight'
+            'username'=>'kryptoknight',
+            'role_id'=>1,
 
         ]);
         DB::table('teams')->insert([

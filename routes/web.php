@@ -1,9 +1,16 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\FollowController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\VoteController;
+use App\Http\Controllers\community\CommunityController;
+use App\Http\Controllers\AnalyticsController;
+use App\Http\Controllers\community\postsController;
+
+
 // use App\Http\Controllers\AdminController;
 /*
 |--------------------------------------------------------------------------
@@ -37,16 +44,42 @@ Route::controller(PostController::class)->group(function(){
  * user timeline
  * 
  */
-Route::get('/profile/{user}',[PostController::class,'profile'])->name('profile');# in this parameter is username of user
-Route::post('/like',[LikeController::class,'like'])->name('like');#either do this in livewire or ajax
-Route::post('/bio',[PostController::class,'AddBio'])->name('bio');
-Route::get('/followers',function(){
-    return view('followers');
-})->name('followers');
+Route::controller(ProfileController::class)->group(function(){
+    Route::get('/profile/{user:username}','profile')->name('profile');
+    Route::get('/status','status')->name('status');
+    Route::post('/like/{id}','like')->name('like')->middleware('only-auth');
+    Route::post('/bio','AddBio')->name('AddBio')->middleware('only-auth');
+    
+});
+Route::post('/follow/{id}',[FollowController::class,'follow'])->name('follow')->middleware('only-auth');
+Route::get('/followers/{user:username}',[FollowController::class,'followers'])->name('followers');
+Route::get('/following/{user:username}',[FollowController::class,'following'])->name('following');
+Route::middleware('only-auth')->controller(VoteController::class)->group(function(){
+    Route::post('/upvote/{slug:slug}','vote')->name('upvote');
+    Route::post('/downvote/{slug:slug}','downvote')->name('downvote');
+});
 
-Route::view('/admin/index','admin.index');
 
-Route::get('/status', [ProfileController::class, 'status'])->name('status');
+//admin routes
+Route::middleware('is-admin')->prefix('admin')->group(function () {
+    Route::controller(AdminController::class)->group(function(){
+        Route::get('/index','index')->name('index');
+        Route::delete('users/{username:username}','delete')->name('users.delete');
+        Route::get('/userposts','userposts')->name('userposts');
+    });
+
+    
+});
+
+ Route::get('post-chart',[AnalyticsController::class,'postChart'])->name('post-chart');
+
+Route::post('/vote/{slug:slug}',[VoteController::class,'ifOtherVoteIsClicked'])->name('vote');
+
+ Route::post('/create-new-community',[CommunityController::class,'createNewCommunity'])->middleware('only-auth');
+ Route::get('/new-community',[CommunityController::class,'community'])->name('community');
+ 
+ Route::resource('community', postsController::class);
+
 
 
 Route::middleware([
