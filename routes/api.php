@@ -29,3 +29,17 @@ Route::controller(ApiPostController::class)->group(function(){
     Route::get('/posts/{id}/delete','delete')->name('posts.delete')->middleware('only-auth');
 
 });
+
+
+use App\Http\Controllers\Auth\RegisterController;
+
+
+Route::get('/register', [RegisterController::class, 'reg'])
+->name('api-register');
+
+
+Route::post('/register', [RegisterController::class, 'registerUser'])
+->name('api-register-user');
+Route::post('/login', [RegisterController::class, 'loginUser'])
+->name('api-login-user');
+Route::post('/logout', [RegisterController::class, 'logoutUser'])->name('api-logout');

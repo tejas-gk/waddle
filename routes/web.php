@@ -23,15 +23,7 @@ use App\Http\Controllers\community\postsController;
 |
 */
 
-use App\Http\Controllers\Auth\RegisterController;
 
-
-Route::get('/register', [RegisterController::class, 'reg'])
-->name('register');
-
-
-Route::post('/register', [RegisterController::class, 'registerUser'])
-->name('register');
 
 Route::view('/', 'welcome');
 
