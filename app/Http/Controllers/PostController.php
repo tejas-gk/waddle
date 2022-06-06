@@ -10,7 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-
+use App\Http\Controllers\ApiPostController;
+use PhpParser\Node\Identifier;
 
 class PostController extends Controller
 {
@@ -26,12 +27,15 @@ class PostController extends Controller
         
         $posts=Post::orderBy('id','DESC')->where(
             'postable_type','user'
-    
+
         )->paginate(5);
         $user=User::select('name')->get();
+        if(url()->current()==url('/posts'))
         return view('posts.index',compact('posts','user'));
+        else  if(url()->current()==url('api/posts/'))
+        return response()->json(['user'=>$user,'posts'=>$posts]);
     }
-
+ 
     /**
      * Show the form for creating a new resource.
      *
@@ -72,8 +76,12 @@ class PostController extends Controller
         $post->net=$output_text['neu'];
         if($post->post!=null ||$post->image!=null)
         $post->save();
+        if(url()->current()==url('/store'))
         return redirect('/posts');
+        if(url()->current()==url('api/posts/store'))
+        return response()->json(['post'=>$post]);
     }
+    
 
     /**
      * Display the specified resource.
@@ -84,16 +92,13 @@ class PostController extends Controller
     
     public function show(Post $post, $id)
     {
-        // if(Gate::allows('isAdmin')){
-        //     dd('post');
-        // }
-        // $this->authorize('isPrivate');
-    //    dd('hey');
         $post=Post::find($id);
-        $user=User::select(
-            'name',
-        )->get(); 
-        return view('posts.show',compact('post','user'));
+        $user=User::find($post->user_id);
+        if(url()->current()==url('/posts/'.$post->id))
+            return view('posts.show',compact('post','user'));
+        else if(url()->current()==url('/api/posts/'.$post->id.'/edit'))
+            return response()->json(['post'=>$post,'user'=>$user]);
+        
     }
    
 

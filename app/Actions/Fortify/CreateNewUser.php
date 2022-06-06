@@ -41,6 +41,7 @@ class CreateNewUser implements CreatesNewUsers
                 'gender'=>$input['gender']
             ]), function (User $user) {
                 $this->createTeam($user);
+                
             });
 
         });

@@ -13,12 +13,14 @@ use Illuminate\Support\Str;
 
 class ApiPostController extends Controller
 {
+   
+       
     public function index()
     {
         $posts=Post::orderBy('id','DESC')->paginate(5);
         $user=User::select('name')->get(); 
         return response()->json(['posts'=>$posts,'user'=>$user]);
-    }
+    } 
     public function create()
     {
         return response()->json(['message'=>'success']);
