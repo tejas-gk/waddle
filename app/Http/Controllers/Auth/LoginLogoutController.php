@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 class LoginLogoutController extends Controller
 {
-    public function login(Request $request){
+    public function loginUser(Request $request){
         // $request->validate([
         //     'email' => 'required|string|email|max:255',
         //     'password' => 'required|string|min:6',
@@ -54,9 +54,9 @@ class LoginLogoutController extends Controller
         
     }
     
-    public function logout(Request $request){
-        $request->user()->token()->revoke();
-        // auth()->user()->tokens()->delete();
+    public function logoutUser(Request $request){
+        // $request->user()->token()->revoke();
+        auth()->user()->tokens()->delete();
         return response()->json([
             'message' => 'Successfully logged out'
         ]);
