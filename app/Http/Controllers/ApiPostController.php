@@ -32,7 +32,8 @@ class ApiPostController extends Controller
         $post->post=$request->post;
         $str=Str::random(10).time();
         $post->slug=Str::slug($request->post).$str;
-        
+        $post->postable_type='post';
+        $post->postable_id=Auth::user()->id;
         $post->user_id=Auth::user()->id;
         if($request->hasFile('image')){
             $image=$request->file('image');
@@ -47,12 +48,66 @@ class ApiPostController extends Controller
     }
     public function show(Post $post, $id)
     {
-        
-
         $post=Post::find($id);
         $user=User::select(
             'name',
         )->get(); 
         return response()->json(['post'=>$post,'user'=>$user]);
     }
+    public function edit(Post $post, $id)
+    {
+        $post=Post::find($id);
+        return response()->json(['post'=>$post]);
+    }
+    public function update(Request $request, Post $post, $id)
+    {
+        $post=Post::find($id);
+        $post->post=$request->post;
+        $post->save();
+        return redirect('/posts');
+    }
+    public function destroy(Post $post, $id)
+    {
+        $post=Post::find($id);
+        $post->delete();
+        return redirect('/posts');
+    }
+    public function restore($id)
+    {
+        Post::withTrashed()->find($id)->restore();
+  
+        return redirect()->back();
+    }  
+    public function restoreAll()
+    {
+        Post::onlyTrashed()->restore();
+  
+        return redirect()->back();
+    }
+    public function onlyDeleted(Request $request)
+    {
+        if ($request->has('trashed')) {
+            $posts = Post::onlyTrashed()
+                ->get();
+        } else {
+            $posts = Post::get();
+        }
+
+        return view('posts', compact('posts'));
+    }
+    public function forceDelete($id)
+    {
+        Post::withTrashed()->find($id)->forceDelete();
+  
+        return redirect()->back();
+    }
+    public function search(Request $request)
+    {
+        $posts = Post::where('post', 'LIKE', '%' . $request->search . '%')
+            ->get();
+        return response()->json(['posts' => $posts]);
+    }
+
+
+   
 }
