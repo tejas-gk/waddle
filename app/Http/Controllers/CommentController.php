@@ -5,14 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
-
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Traits\PostTrait;
+use Illuminate\Http\Request;
 class CommentController extends Controller
 {
+    use PostTrait;
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    public $post_type='comment';
+    public function post_id(){
+        return $post_id=Auth::user()->id;
+    }//if I return this normally it gives me error
+
+
     public function index()
     {
         //
@@ -34,9 +43,14 @@ class CommentController extends Controller
      * @param  \App\Http\Requests\StoreCommentRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCommentRequest $request)
+    public function store(Request $request)
     {
-        //
+        PostTrait::store($request);
+        if(url()->current()==url('/store'))
+        return redirect('/posts');
+        if(url()->current()==url('api/posts/store'))
+        return response()->json(['post'=>$this->post]);
+
     }
 
     /**

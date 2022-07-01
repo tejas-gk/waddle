@@ -76,7 +76,7 @@ Route::middleware('is-admin')->prefix('admin')->group(function () {
 Route::post('/vote/{slug:slug}',[VoteController::class,'ifOtherVoteIsClicked'])->name('vote');
 
  Route::post('/create-new-community',[CommunityController::class,'createNewCommunity'])->middleware('only-auth');
- Route::get('/new-community',[CommunityController::class,'community'])->name('community');
+ Route::get('/new-community',[CommunityController::class,'community'])->name('new-community');
  
  Route::resource('community', postsController::class);
 

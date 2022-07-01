@@ -10,12 +10,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use App\Http\Controllers\ApiPostController;
+use App\Http\Controllers\Traits\PostTrait;
 use PhpParser\Node\Identifier;
 
 class PostController extends Controller
 {
-
+    use PostTrait;
    
     public $post_type='user';
     public function post_id(){

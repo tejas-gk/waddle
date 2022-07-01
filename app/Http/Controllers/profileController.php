@@ -27,11 +27,11 @@ class ProfileController extends Controller
 
         return view('users.profile', compact('user','posts'));
     }
-    public function like(Post $post){
-        $post->like()->toggle(Auth::user()->id);
-        return back();
+    // public function like(Post $post){
+    //     $post->like()->toggle(Auth::user()->id);
+    //     return back();
         
-    }
+    // }
     public function AddBio(Request $request){
         $user=User::find(Auth::user()->id);
         $user->bio=$request->bio;

@@ -6,7 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use App\Providers\BladeServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Pagination\Paginator;
-
+use Laravel\Cashier\Cashier;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -16,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        Cashier::useCustomerModel(User::class);
     }
 
     /**
@@ -27,6 +27,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Paginator::useBootstrap();
+        Cashier::ignoreMigrations();
+        Cashier::calculateTaxes();
         
     }
 }

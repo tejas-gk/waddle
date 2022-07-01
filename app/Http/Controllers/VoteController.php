@@ -46,13 +46,15 @@ class VoteController extends Controller
        $vote=new Vote();
        $getPosts=Post::where('slug',$request->slug)->first()->id;
        $isUpvoted=$vote->where('user_id',Auth::user()->id)->where('post_id',$getPosts)->first();
+       $isDownvoted=$vote->where('user_id',Auth::user()->id)->where('post_id',$getPosts)->first();
          if($isUpvoted){
               $vote->where('user_id',Auth::user()->id)->where('post_id',$getPosts)->delete();
+              $this->downvote($request);
               return redirect()->back();
          }
          
           
-       $vote=Vote::create(
+       $request->upvote=Vote::create(
             [
                 'user_id'=>Auth::user()->id,
                 'post_id'=>$getPosts,
@@ -60,6 +62,14 @@ class VoteController extends Controller
 
             ],
           );  
+          $request->downvote=Vote::create(
+            [
+                'user_id'=>Auth::user()->id,
+                'post_id'=>$getPosts,
+                'downvote'=>1
+
+            ],
+          );      
             
          $vote->save();
          return redirect()->back();

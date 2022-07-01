@@ -20,19 +20,19 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::controller(ApiPostController::class)->group(function(){
-    Route::get('/posts','index')->name('posts.index');
-    Route::get('/create','create')->name('posts.create')->middleware('auth:sanctum');
-    Route::post('/store','store')->name('posts.store')->middleware('auth:sanctum');
-    Route::get('/posts/{id}','show')->name('posts.show');
-    Route::get('/posts/{id}/edit','edit')->name('posts.edit')->middleware('auth:sanctum');
-    Route::put('/posts/{id}/update','update')->name('posts.update')->middleware('auth:sanctum');
-    Route::delete('/posts/{id}/delete','destroy')->name('posts.delete')->middleware('auth:sanctum');
-    Route::post('/posts/{id}/restore','restore')->name('posts.restore')->middleware('auth:sanctum');
-    Route::post('/posts/{id}/delete-permanent','forceDelete')->name('posts.delete-permanent')->middleware('auth:sanctum');
-    Route::get('posts/only-deleted','onlyDeleted')->name('posts.only-deleted')->middleware('auth:sanctum');
-    Route::post('/posts/search/{','search')->name('posts.search')->middleware('auth:sanctum');
-});
+// Route::controller(ApiPostController::class)->group(function(){
+//     Route::get('/posts','index')->name('posts.index');
+//     Route::get('/create','create')->name('posts.create')->middleware('auth:sanctum');
+//     Route::post('/store','store')->name('posts.store')->middleware('auth:sanctum');
+//     Route::get('/posts/{id}','show')->name('posts.show');
+//     Route::get('/posts/{id}/edit','edit')->name('posts.edit')->middleware('auth:sanctum');
+//     Route::put('/posts/{id}/update','update')->name('posts.update')->middleware('auth:sanctum');
+//     Route::delete('/posts/{id}/delete','destroy')->name('posts.delete')->middleware('auth:sanctum');
+//     Route::post('/posts/{id}/restore','restore')->name('posts.restore')->middleware('auth:sanctum');
+//     Route::post('/posts/{id}/delete-permanent','forceDelete')->name('posts.delete-permanent')->middleware('auth:sanctum');
+//     Route::get('posts/only-deleted','onlyDeleted')->name('posts.only-deleted')->middleware('auth:sanctum');
+//     Route::post('/posts/search/{','search')->name('posts.search')->middleware('auth:sanctum');
+// });
 
 
 use App\Http\Controllers\Auth\RegisterController;
