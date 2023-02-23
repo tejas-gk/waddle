@@ -1,4 +1,4 @@
-# waddle
+# Waddle
 this is a old project but thanks for checking out
 Here's how to get started <br>
 ``` 
